@@ -1,37 +1,36 @@
 <?php
-//setting header to json
+// setting header agar berformat JSON
 header('Content-Type: application/json');
 
-//database
-define('DB_HOST', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'gas_detector');
+// Koeneksi Database
+define('DB_HOST', 'localhost'); // mendefinisikan Host
+define('DB_USERNAME', 'root'); // mendefinisikan user name
+define('DB_PASSWORD', ''); // mendefinisikan password
+define('DB_NAME', 'gas_detector'); // mendefinisikan nama database
 
-//get connection
-$mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME); // melakukan koneksi ke database
 
 if(!$mysqli){
-	die("Connection failed: " . $mysqli->error);
+	die("Connection failed: " . $mysqli->error); // jika gagal dalam proses koneksi ke Database maka akan memunculkan errornya
 }
 
-//query to get data from the table
+// query untuk mendapatkan seluruh data dari tabel data dalam data base berdasarkan tanggal, diurut dari belakang dan dibatasi 20 baris data
 $query = sprintf("SELECT data.id, data.date, data.gas FROM data ORDER BY data.date DESC LIMIT 20");
 
-//execute query
+// melakukan eksekusi pada Query
 $result = $mysqli->query($query);
 
-//loop through the returned data
+// melakukan perulangan pada setiap data yang ada di dalam tabel database
 $data = array();
 foreach ($result as $row) {
 	$data[] = $row;
 }
 
-//free memory associated with result
+// membersihkan memory yang sebelumnya digunakan
 $result->close();
 
-//close connection
+// menutup koneksi database
 $mysqli->close();
 
-//now print the data
+// menampilkan data dalam bentuk format JSON
 print json_encode($data);

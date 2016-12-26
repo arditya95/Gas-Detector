@@ -86,31 +86,35 @@
                     <td align="center" class="table_titles">Status</td>
               </tr>
                 <?php
-                    // Retrieve all records and display them
-                    $query= "SELECT * FROM data ORDER BY id DESC LIMIT 20";
-                    $result = mysqli_query($con,$query);
+                    $query= "SELECT * FROM data ORDER BY id DESC LIMIT 20"; // mengambil seluruh data yang ada berdasarkan id dan di urut dari belakang dan memiliki batas 20 baris data
+                    $result = mysqli_query($con,$query); // melakuka eksekusi pada query yang telah dibuat sebelumnya
 
-                    // process every record
+                    // memproses setiap data yang tersimpan
                     while( $row = mysqli_fetch_array($result) )
                     {
+                      // melakukan pengecekan terhadap data gas yang diterima apakah melebihi 51, jika melebihi angka 51 maka Statusnya menjadi "BAHAYA GAS BOCOR !!!"
                         if ($row["gas"] > 51) {
                           $status = "BAHAYA GAS BOCOR !!!";
-                          $css_class=' class="table_cells_danger"';
+                          $css_class=' class="table_cells_danger"'; // mengatur warna tabel agar berwarna merah jika melebihi angka 51
                         }
+
+                      // melakukan pengecekan terhadap data gas yang diterima apakah melebihi 26, jika melebihi angka 26 maka Statusnya menjadi "BOCOR SEDANG !!"
                         elseif ($row["gas"] > 26) {
                           $status = "BOCOR SEDANG !!";
-                          $css_class=' class="table_cells_warning"';
+                          $css_class=' class="table_cells_warning"'; // mengatur warna tabel agar berwarna kuning jika melebihi angka 26
                         }
+
+                      //jika selain 2 kondisi diatas status dari gas adalah "GAS NORMAL"
                         else {
                           $status = "GAS NORMAL";
-                          $css_class=' class="table_cells_normal"';
+                          $css_class=' class="table_cells_normal"'; // mengatur warna tabel agar berwarna hijau jika gas normal
                         }
 
                         echo '<tr>';
-                        echo '   <td align="center" '.$css_class.'>'.$row["id"].'</td>';
-                        echo '   <td align="center" '.$css_class.'>'.$row["date"].'</td>';
-                        echo '   <td align="center" '.$css_class.'>'.$row["gas"].' %</td>';
-                        echo '   <td align="center" '.$css_class.'>'.$status.'</td>';
+                        echo '   <td align="center" '.$css_class.'>'.$row["id"].'</td>'; // menampilkan setiap data (ID) dari database kedalam tabel data
+                        echo '   <td align="center" '.$css_class.'>'.$row["date"].'</td>'; // menampilkan setiap data (DATE) dari database kedalam tabel data
+                        echo '   <td align="center" '.$css_class.'>'.$row["gas"].' %</td>'; // menampilkan setiap data (GAS) dari database kedalam tabel data
+                        echo '   <td align="center" '.$css_class.'>'.$status.'</td>'; // menampilkan status dari kadar gas yang disimpan dalam database
                         echo '</tr>';
                     }
                 ?>
@@ -118,7 +122,7 @@
           </div>
           <!-- Tabel End-->
 
-          <!-- Chart -->
+          <!-- mendeklarasikan canvas yang selanjutnya akan digunakan untuk menempatkan line chart pada halaman-->
           <div class="col-md-6" id="chart-container">
             <canvas id="mycanvas"></canvas>
           </div>
